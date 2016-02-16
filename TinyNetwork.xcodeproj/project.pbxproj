@@ -145,11 +145,18 @@
 			path = JSONParser;
 			sourceTree = "<group>";
 		};
+		3640D40D1C73D24100FEF416 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3640D3FE1C73CD4D00FEF416 /* GitHubProfile.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		36A145241C73A358007AFA01 = {
 			isa = PBXGroup;
 			children = (
 				3640D3F71C73C6C200FEF416 /* Vendor */,
-				36A145611C73A3E7007AFA01 /* Library */,
 				36A1452F1C73A358007AFA01 /* Source */,
 				36A145601C73A3A0007AFA01 /* Tests */,
 				36A1455E1C73A38E007AFA01 /* Resources */,
@@ -171,6 +178,8 @@
 		36A1452F1C73A358007AFA01 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				3640D3F61C73C66900FEF416 /* Endpoints */,
+				3640D40D1C73D24100FEF416 /* Models */,
 				36A145301C73A358007AFA01 /* AppDelegate.swift */,
 				36A145321C73A358007AFA01 /* ViewController.swift */,
 			);
@@ -220,15 +229,6 @@
 				36A145441C73A358007AFA01 /* UnitTests */,
 			);
 			path = Tests;
-			sourceTree = "<group>";
-		};
-		36A145611C73A3E7007AFA01 /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				3640D3F61C73C66900FEF416 /* Endpoints */,
-				3640D3FE1C73CD4D00FEF416 /* GitHubProfile.swift */,
-			);
-			path = Library;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
