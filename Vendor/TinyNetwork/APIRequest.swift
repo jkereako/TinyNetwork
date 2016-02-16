@@ -1,5 +1,5 @@
 //
-//  TinyNetwork.swift
+//  APIRequest.swift
 //  TinyNetwork
 //
 //  Created by Chris Eidof on 11/07/14.
@@ -25,7 +25,7 @@
 import Foundation
 
 func apiRequest<A>(
-  modifyRequest: NSMutableURLRequest -> (), baseURL: NSURL, resource: Resource<A>,
+  requestModifier requestModifier: NSMutableURLRequest -> (), baseURL: NSURL, resource: Resource<A>,
   failure: (Reason, NSData?) -> (), completion: A -> ()) {
 
     let session = NSURLSession.sharedSession()
@@ -35,7 +35,7 @@ func apiRequest<A>(
     request.HTTPMethod = resource.method.rawValue
     request.HTTPBody = resource.requestBody
 
-    modifyRequest(request)
+    requestModifier(request)
 
     for (key,value) in resource.headers {
       request.setValue(value, forHTTPHeaderField: key)
@@ -47,7 +47,7 @@ func apiRequest<A>(
       if let httpResponse = response as? NSHTTPURLResponse {
         if httpResponse.statusCode == 200 {
           if let responseData = data {
-            if let result = resource.parse(responseData) {
+            if let result = resource.parser(responseData) {
               completion(result)
             }
 

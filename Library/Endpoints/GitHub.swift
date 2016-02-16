@@ -11,6 +11,7 @@ import Foundation
 
 enum Github {
   case Zen
+  case User
   case UserProfile(String)
 }
 
@@ -18,6 +19,7 @@ extension Github: Path {
   var path: String {
     switch self {
     case .Zen: return "/zen"
+    case .User: return "/user"
     case .UserProfile(let name): return "/users/\(name)"
     }
   }

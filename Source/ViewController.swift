@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     let string = NSString(data: data!, encoding: NSUTF8StringEncoding)
     print("Failure: \(failureReason) \(string)")
   }
-  
+
   func parseString(data: NSData) -> String? {
     return String(data: data, encoding: NSUTF8StringEncoding)
   }
@@ -25,7 +25,7 @@ class ViewController: UIViewController {
       method: Method.GET,
       requestBody: nil,
       headers: [:],
-      parse: parseString
+      parser: parseString
     )
   }
 
@@ -34,7 +34,8 @@ class ViewController: UIViewController {
 
     let baseURL = NSURL(string: "https://api.github.com")!
 
-    apiRequest({ _ in },
+    apiRequest(
+      requestModifier: { _ in },
       baseURL: baseURL,
       resource: zen(),
       failure: defaultFailureHandler) { message in

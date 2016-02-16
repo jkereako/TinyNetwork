@@ -1,5 +1,5 @@
 //
-//  JSONHelpers.swift
+//  GitHubProfile.swift
 //  TinyNetwork
 //
 //  Created by Chris Eidof on 11/07/14.
@@ -24,58 +24,9 @@
 
 import Foundation
 
-
-// Here are some convenience functions for dealing with JSON APIs
-
-typealias JSONDictionary = [String:AnyObject]
-
-func decodeJSON(data: NSData) -> JSONDictionary? {
-  do {
-    return try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions())
-      as? [String:AnyObject]
-  }
-  catch {
-    print("An error occured")
-  }
-
-  return nil
+struct GitHubProfile {
+  let login: String
+  let id: Int
+  let avatarURL: NSURL
 }
 
-func encodeJSON(dict: JSONDictionary) -> NSData? {
-  guard !dict.isEmpty else {
-    return nil
-  }
-
-  do {
-    return try NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions())
-  }
-
-  catch {
-    print("An error occured")
-  }
-
-  return nil
-}
-
-func jsonResource<A>(
-  path: Path, method: Method, requestParameters: JSONDictionary, parse: JSONDictionary -> A?)
-  -> Resource<A> {
-    let f = { decodeJSON($0) >>>= parse }
-    let jsonBody = encodeJSON(requestParameters)
-    let headers = ["Content-Type": "application/json"]
-    return Resource(path: path, method: method, requestBody: jsonBody, headers: headers, parse: f)
-}
-
-func flatten<A>(x: A??) -> A? {
-  if let y = x {
-    return y
-  }
-
-  return nil
-}
-
-infix operator  >>>= {}
-
-func >>>= <A,B> (optional : A?, f : A -> B?) -> B? {
-  return flatten(optional.map(f))
-}

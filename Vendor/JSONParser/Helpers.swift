@@ -1,5 +1,5 @@
 //
-//  ErrorTypes.swift
+//  JSONHelpers.swift
 //  TinyNetwork
 //
 //  Created by Chris Eidof on 11/07/14.
@@ -24,9 +24,25 @@
 
 import Foundation
 
-enum Reason: ErrorType {
-  case CouldNotParseJSON
-  case NoData
-  case NoSuccessStatusCode(statusCode: Int)
-  case Other(NSError)
+
+// Here are some convenience functions for dealing with JSON APIs
+
+func flatten<A>(x: A??) -> A? {
+  if let y = x {
+    return y
+  }
+
+  return nil
+}
+
+func join<A>(elements: [A?]) -> [A]? {
+  var result : [A] = []
+  for element in elements {
+    if let x = element {
+      result += [x]
+    } else {
+      return nil
+    }
+  }
+  return result
 }

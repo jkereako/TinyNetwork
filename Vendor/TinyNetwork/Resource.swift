@@ -29,5 +29,5 @@ struct Resource<A> {
   let method: Method
   let requestBody: NSData?
   let headers: [String: String]
-  let parse: NSData -> A?
+  let parser: NSData -> A?
 }
