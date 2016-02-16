@@ -1,5 +1,5 @@
 //
-//  TinyNetwork.swift
+//  JSONHelpers.swift
 //  TinyNetwork
 //
 //  Created by Chris Eidof on 11/07/14.
@@ -24,82 +24,6 @@
 
 import Foundation
 
-enum Method: String { // Bluntly stolen from Alamofire
-  case OPTIONS = "OPTIONS"
-  case GET = "GET"
-  case HEAD = "HEAD"
-  case POST = "POST"
-  case PUT = "PUT"
-  case PATCH = "PATCH"
-  case DELETE = "DELETE"
-  case TRACE = "TRACE"
-  case CONNECT = "CONNECT"
-}
-
-struct Resource<A> {
-  let path: Path
-  let method: Method
-  let requestBody: NSData?
-  let headers: [String: String]
-  let parse: NSData -> A?
-}
-
-enum Reason {
-  case CouldNotParseJSON
-  case NoData
-  case NoSuccessStatusCode(statusCode: Int)
-  case Other(NSError)
-}
-
-func apiRequest<A>(
-  modifyRequest: NSMutableURLRequest -> (), baseURL: NSURL, resource: Resource<A>,
-  failure: (Reason, NSData?) -> (), completion: A -> ()) {
-
-    let session = NSURLSession.sharedSession()
-    let url = baseURL.URLByAppendingPathComponent(resource.path.path)
-    let request = NSMutableURLRequest(URL: url)
-
-    request.HTTPMethod = resource.method.rawValue
-    request.HTTPBody = resource.requestBody
-
-    modifyRequest(request)
-
-    for (key,value) in resource.headers {
-      request.setValue(value, forHTTPHeaderField: key)
-    }
-
-    let task = session.dataTaskWithRequest(request) {
-      (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
-
-      if let httpResponse = response as? NSHTTPURLResponse {
-        if httpResponse.statusCode == 200 {
-          if let responseData = data {
-            if let result = resource.parse(responseData) {
-              completion(result)
-            }
-
-            else {
-              failure(Reason.CouldNotParseJSON, data)
-            }
-          }
-
-          else {
-            failure(Reason.NoData, data)
-          }
-        } // httpResponse.statusCode == 200
-
-        else {
-          failure(Reason.NoSuccessStatusCode(statusCode: httpResponse.statusCode), data)
-        }
-      }
-
-      else {
-        failure(Reason.Other(error!), data)
-      }
-    }
-
-    task.resume()
-}
 
 // Here are some convenience functions for dealing with JSON APIs
 

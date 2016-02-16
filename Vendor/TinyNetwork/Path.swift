@@ -1,5 +1,5 @@
 //
-//  Endpoints.swift
+//  Path.swift
 //  TinyNetwork
 //
 //  Created by Chris Eidhof on 8/17/14.
@@ -9,20 +9,6 @@
 
 import Foundation
 
-enum Github {
-  case Zen
-  case UserProfile(String)
-}
-
 protocol Path {
   var path: String { get }
-}
-
-extension Github: Path {
-  var path: String {
-    switch self {
-    case .Zen: return "/zen"
-    case .UserProfile(let name): return "/users/\(name)"
-    }
-  }
 }
