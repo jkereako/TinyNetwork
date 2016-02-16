@@ -1,5 +1,5 @@
 //
-//  JSONHelpers.swift
+//  Helpers.swift
 //  TinyNetwork
 //
 //  Created by Chris Eidof on 11/07/14.
