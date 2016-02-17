@@ -22,4 +22,5 @@
 
 import Foundation
 
+// Provides context to make the code more readable
 typealias JSONDictionary = [String: AnyObject]

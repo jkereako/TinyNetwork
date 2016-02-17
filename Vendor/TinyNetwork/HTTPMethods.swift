@@ -24,7 +24,11 @@
 
 import Foundation
 
-enum Method: String { // Bluntly stolen from Alamofire
+// Allow us to leverage Swift's type system to describe HTTP methods. This will make it impossible
+// for a developer to commit a typo which would happen if we were using strings only.
+
+// Bluntly stolen from Alamofire
+enum Method: String {
   case OPTIONS = "OPTIONS"
   case GET = "GET"
   case HEAD = "HEAD"

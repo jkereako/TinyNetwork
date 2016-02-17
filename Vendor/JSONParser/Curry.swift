@@ -20,16 +20,22 @@
 //  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+// The number of arguments per `curry` definition depend on the number of JSON properties you want
+// to parse. In it's current state, you may only parse up to 4 properties.
+
+// Take a look at Thoughtbot's Curry (https://github.com/thoughtbot/Curry/blob/master/Source/Curry.swift) 
+// which supports up to 18 properties.
+
 import Foundation
 
-func curry<A,B,R>(f: (A,B) -> R) -> A -> B -> R {
-  return { a in { b in f(a,b) } }
+func curry<A, B, R>(f: (A, B) -> R) -> A -> B -> R {
+  return { a in { b in f(a, b) } }
 }
 
-func curry<A,B,C,R>(f: (A,B,C) -> R) -> A -> B -> C -> R {
-  return { a in { b in {c in f(a,b,c) } } }
+func curry<A, B, C, R>(f: (A, B, C) -> R) -> A -> B -> C -> R {
+  return { a in { b in {c in f(a, b, c) } } }
 }
 
-func curry<A,B,C,D,R>(f: (A,B,C,D) -> R) -> A -> B -> C -> D -> R {
-  return { a in { b in { c in { d in f(a,b,c,d) } } } }
+func curry<A, B, C, D, R>(f: (A, B, C, D) -> R) -> A -> B -> C -> D -> R {
+  return { a in { b in { c in { d in f(a, b, c, d) } } } }
 }

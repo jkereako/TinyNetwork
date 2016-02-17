@@ -22,7 +22,8 @@
 
 import Foundation
 
-func JSONResourceConstructor<A>(
+// This is a constructor for a Resource specifically for JSON. You may define other constructors.
+func JSONResourceConvenienceConstructor<A>(
   path path: Path, method: Method, requestParameters: JSONDictionary, parse: JSONDictionary -> A?)
   -> Resource<A> {
     let f = { decodeJSON($0) >>>= parse }

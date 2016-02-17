@@ -22,8 +22,19 @@
 
 import Foundation
 
+// These are generic helpers for converting a dictionary of type `[String: AnyObject]` into a
+// another, more specific type. If, for example, want to convert the `[String: AnyObject]` 
+// dictionary into an array of Ints, you would define a function as follows:
+//  
+//  ```swift
+//  func arrayOfInts(input: [String: AnyObject], key: String) ->  [Int]? {
+//    let maybeAny: AnyObject? = input[key]
+//    return maybeAny >>>= { $0 as? [Int] }
+//  }
+//  ```
+
 func array(input: [String: AnyObject], key: String) ->  [AnyObject]? {
-  let maybeAny : AnyObject? = input[key]
+  let maybeAny: AnyObject? = input[key]
   return maybeAny >>>= { $0 as? [AnyObject] }
 }
 
@@ -31,12 +42,12 @@ func dictionary(input: [String: AnyObject], key: String) ->  [String:AnyObject]?
   return input[key] >>>= { $0 as? [String:AnyObject] }
 }
 
-func string(input: [String: AnyObject], key: String) -> String? {
-  return input[key] >>>= { $0 as? String }
-}
-
 func url(input: [String: AnyObject], key: String) -> NSURL? {
   return input[key] >>>= { $0 as? NSURL }
+}
+
+func string(input: [String: AnyObject], key: String) -> String? {
+  return input[key] >>>= { $0 as? String }
 }
 
 func number(input: [NSObject: AnyObject], key: String) -> NSNumber? {

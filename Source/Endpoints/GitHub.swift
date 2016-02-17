@@ -7,6 +7,10 @@
 //
 // http://chris.eidhof.nl/posts/typesafe-url-routes-in-swift.html
 
+// This follows the same practice as the file `HTTPMethods`. To declare each endpoint as an `enum`
+// makes it impossible for a developer to accidently commit a typo. Also, the options will be
+// present in XCode's code completion utility, which makes it clear exactly which endpoints are
+// supported.
 import Foundation
 
 enum Github {

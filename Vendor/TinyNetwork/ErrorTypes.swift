@@ -24,6 +24,7 @@
 
 import Foundation
 
+// Provides a more specific reason for failure.
 enum Reason: ErrorType {
   case CouldNotParseJSON
   case NoData

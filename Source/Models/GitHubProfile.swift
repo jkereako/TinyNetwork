@@ -22,6 +22,11 @@
 
 // See the accompanying blog post: http://chris.eidhof.nl/posts/tiny-networking-in-swift.html
 
+// This let's us save JSON, which is represented as a `[String: AnyObject]` dictionary, as a type.
+// If we were to use this this with Core Data, then to build the Core Data object would be as simple
+// as passing in a `GitHubProfile` instance into the Core Data class `init` method. Because all of
+// the properties of `GitHubProfile` are not optional, we can guarantee that the values will always
+// exist.
 import Foundation
 
 struct GitHubProfile {
