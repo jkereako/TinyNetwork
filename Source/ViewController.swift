@@ -8,6 +8,14 @@
 
 import UIKit
 
+struct GithubProfile {
+  let login: String
+  let id: Int
+  let avatarURL: NSURL
+}
+
+let makeGithubProfile = { GithubProfile(login: $0, id: $1, avatarURL: $2) }
+
 class ViewController: UIViewController {
 
   func defaultFailureHandler(failureReason: Reason, data: NSData?) {
@@ -29,6 +37,30 @@ class ViewController: UIViewController {
     )
   }
 
+  func parseGithubProfile(dict: JSONDictionary) -> GithubProfile? {
+    return curry(makeGithubProfile) <*> string(dict, key: "login")
+      <*> int(dict, key: "id")
+      <*> url(dict, key: "avatar_url")
+  }
+
+
+  func request<A>(resource: Resource<A>, completionHandler: A -> ()) {
+    let authorizationToken = ""
+    let baseURL = NSURL(string: "https://api.github.com")!
+
+    func setAuthToken(request: NSMutableURLRequest) {
+      request.setValue("token \(authorizationToken)", forHTTPHeaderField: "Authorization")
+    }
+    
+    apiRequest(
+      requestModifier: setAuthToken,
+      baseURL: baseURL,
+      resource: resource,
+      failure: defaultFailureHandler,
+      completion: completionHandler
+    )
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -38,9 +70,11 @@ class ViewController: UIViewController {
       requestModifier: { _ in },
       baseURL: baseURL,
       resource: zen(),
-      failure: defaultFailureHandler) { message in
+      failure: defaultFailureHandler,
+      completion: { message in
         print("Got a message: \(message)")
-    }
+      }
+    )
   }
 }
 

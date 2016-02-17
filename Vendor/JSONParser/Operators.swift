@@ -30,6 +30,7 @@ func <*><A, B>(l: (A -> B)?, r: A?) -> B? {
       return l1(r1)
     }
   }
+  
   return nil
 }
 

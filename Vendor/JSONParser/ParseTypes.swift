@@ -35,6 +35,10 @@ func string(input: [String: AnyObject], key: String) -> String? {
   return input[key] >>>= { $0 as? String }
 }
 
+func url(input: [String: AnyObject], key: String) -> NSURL? {
+  return input[key] >>>= { $0 as? NSURL }
+}
+
 func number(input: [NSObject: AnyObject], key: String) -> NSNumber? {
   return input[key] >>>= { $0 as? NSNumber }
 }

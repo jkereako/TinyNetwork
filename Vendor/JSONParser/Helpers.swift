@@ -37,10 +37,13 @@ func flatten<A>(x: A??) -> A? {
 
 func join<A>(elements: [A?]) -> [A]? {
   var result : [A] = []
+
   for element in elements {
     if let x = element {
       result += [x]
-    } else {
+    }
+
+    else {
       return nil
     }
   }

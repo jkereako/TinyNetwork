@@ -22,7 +22,6 @@
 
 import Foundation
 
-
 func curry<A,B,R>(f: (A,B) -> R) -> A -> B -> R {
   return { a in { b in f(a,b) } }
 }
