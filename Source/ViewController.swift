@@ -24,31 +24,32 @@ class ViewController: UIViewController {
       <*> url(dict, key: "avatar_url")
   }
 
-/*
+  /*
   func request<A>(resource: Resource<A>, completionHandler: A -> ()) {
-    let authorizationToken = ""
-    let baseURL = NSURL(string: "https://api.github.com")!
+  let authorizationToken = ""
+  let baseURL = NSURL(string: "https://api.github.com")!
 
-    func setAuthToken(request: NSMutableURLRequest) {
-      request.setValue("token \(authorizationToken)", forHTTPHeaderField: "Authorization")
-    }
-    
-    apiRequest(
-      requestModifier: setAuthToken,
-      baseURL: baseURL,
-      resource: resource,
-      failure: GitHubResponse().defaultFailureHandler,
-      completion: completionHandler
-    )
+  func setAuthToken(request: NSMutableURLRequest) {
+  request.setValue("token \(authorizationToken)", forHTTPHeaderField: "Authorization")
   }
-*/
+
+  apiRequest(
+  requestModifier: setAuthToken,
+  baseURL: baseURL,
+  resource: resource,
+  failure: GitHubResponse().defaultFailureHandler,
+  completion: completionHandler
+  )
+  }
+  */
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    apiRequest(
-      requestModifier: { _ in },
-      baseURL: GitHubRequest.baseURL,
+    let apiRequest = APIRequest(baseURL: GitHubRequest.baseURL)
+
+    apiRequest.makeRequest(
+      requestModifier: nil,
       resource: GitHubRequest().zen(),
       failure: GitHubResponse().defaultFailureHandler,
       completion: { message in

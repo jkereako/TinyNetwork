@@ -24,52 +24,63 @@
 
 import Foundation
 
-func apiRequest<A>(
-  requestModifier requestModifier: NSMutableURLRequest -> (), baseURL: NSURL, resource: Resource<A>,
-  failure: (Reason, NSData?) -> (), completion: A -> ()) {
+struct APIRequest {
+  let session: NSURLSession
+  let baseURL: NSURL
 
-    let session = NSURLSession.sharedSession()
-    let url = baseURL.URLByAppendingPathComponent(resource.path.path)
-    let request = NSMutableURLRequest(URL: url)
+  init(baseURL: NSURL, session: NSURLSession = NSURLSession.sharedSession()) {
+    self.baseURL = baseURL
+    self.session = session
+  }
 
-    request.HTTPMethod = resource.method.rawValue
-    request.HTTPBody = resource.requestBody
+  func makeRequest<A>(
+    requestModifier requestModifier: (NSMutableURLRequest -> ())?, resource: Resource<A>,
+    failure: (Reason, NSData?) -> (), completion: A -> ()) {
 
-    requestModifier(request)
+      let session = NSURLSession.sharedSession()
+      let url = baseURL.URLByAppendingPathComponent(resource.path.path)
+      let request = NSMutableURLRequest(URL: url)
 
-    for (key,value) in resource.headers {
-      request.setValue(value, forHTTPHeaderField: key)
-    }
+      request.HTTPMethod = resource.method.rawValue
+      request.HTTPBody = resource.requestBody
 
-    let task = session.dataTaskWithRequest(request) {
-      (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+      requestModifier?(request)
 
-      if let httpResponse = response as? NSHTTPURLResponse {
-        if httpResponse.statusCode == 200 {
-          if let responseData = data {
-            if let result = resource.parser(responseData) {
-              completion(result)
+      for (key,value) in resource.headers {
+        request.setValue(value, forHTTPHeaderField: key)
+      }
+
+      let task = session.dataTaskWithRequest(request) {
+        (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+
+        if let httpResponse = response as? NSHTTPURLResponse {
+          
+          if 200...299 ~= httpResponse.statusCode {
+            if let responseData = data {
+              if let result = resource.parser(responseData) {
+                completion(result)
+              }
+
+              else {
+                failure(Reason.CouldNotParseJSON, data)
+              }
             }
 
             else {
-              failure(Reason.CouldNotParseJSON, data)
+              failure(Reason.NoData, data)
             }
-          }
+          } // httpResponse.statusCode == 200
 
           else {
-            failure(Reason.NoData, data)
+            failure(Reason.NoSuccessStatusCode(statusCode: httpResponse.statusCode), data)
           }
-        } // httpResponse.statusCode == 200
+        }
 
         else {
-          failure(Reason.NoSuccessStatusCode(statusCode: httpResponse.statusCode), data)
+          failure(Reason.Other(error!), data)
         }
       }
-
-      else {
-        failure(Reason.Other(error!), data)
-      }
-    }
-
-    task.resume()
+      
+      task.resume()
+  }
 }
