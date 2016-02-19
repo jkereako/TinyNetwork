@@ -30,6 +30,8 @@
 		36A145461C73A358007AFA01 /* TinyNetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A145451C73A358007AFA01 /* TinyNetworkTests.swift */; };
 		36A145511C73A358007AFA01 /* TinyNetworkUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A145501C73A358007AFA01 /* TinyNetworkUITests.swift */; };
 		36A145631C73A3F7007AFA01 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A145621C73A3F7007AFA01 /* APIRequest.swift */; };
+		626CD1B21C769889008B580B /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626CD1B11C769889008B580B /* MockURLSession.swift */; };
+		626CD1B41C769898008B580B /* MockURLSessionDataTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626CD1B31C769898008B580B /* MockURLSessionDataTask.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +81,8 @@
 		36A145501C73A358007AFA01 /* TinyNetworkUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TinyNetworkUITests.swift; sourceTree = "<group>"; };
 		36A145521C73A358007AFA01 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		36A145621C73A3F7007AFA01 /* APIRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
+		626CD1B11C769889008B580B /* MockURLSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockURLSession.swift; sourceTree = "<group>"; };
+		626CD1B31C769898008B580B /* MockURLSessionDataTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockURLSessionDataTask.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,6 +201,8 @@
 			children = (
 				36A145471C73A358007AFA01 /* Info.plist */,
 				36A145451C73A358007AFA01 /* TinyNetworkTests.swift */,
+				626CD1B11C769889008B580B /* MockURLSession.swift */,
+				626CD1B31C769898008B580B /* MockURLSessionDataTask.swift */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -393,6 +399,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				626CD1B41C769898008B580B /* MockURLSessionDataTask.swift in Sources */,
+				626CD1B21C769889008B580B /* MockURLSession.swift in Sources */,
 				36A145461C73A358007AFA01 /* TinyNetworkTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
