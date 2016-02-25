@@ -25,12 +25,15 @@ import Foundation
 struct ResourceConstructor {
   // This is a constructor for a Resource specifically for JSON. You may define other constructors.
   static func JSONResource<A>(
-    path path: Path, method: Method, requestParameters: JSONDictionary, parse: JSONDictionary -> A?)
-    -> Resource<A> {
+    path path: Path, method: HTTPMethod, requestParameters: JSONDictionary, parse: JSONDictionary
+    -> A?) -> Resource<A> {
+
       let f = { decodeJSON($0) >>>= parse }
       let jsonBody = encodeJSON(requestParameters)
       let headers = ["Content-Type": "application/json"]
-      return Resource(path: path, method: method, requestBody: jsonBody, headers: headers, parser: f)
+      return Resource(
+        path: path, method: method, requestBody: jsonBody, headers: headers, parser: f
+      )
   }
-
+  
 }

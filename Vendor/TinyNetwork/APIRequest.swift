@@ -1,9 +1,12 @@
 //
 //  APIRequest.swift
-//  TinyNetwork
 //
-//  Created by Chris Eidof on 11/07/14.
-//  Copyright © 2015 Chris Eidhof
+//  http://chris.eidhof.nl/posts/tiny-networking-in-swift.html
+//
+//  Created by Jeffrey Kereakoglow on 2/16/16.
+//  Copyright © 2016 Chris Eidhof
+//
+//  Licensed under the MIT license:
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 //  and associated documentation files (the "Software"), to deal in the Software without
@@ -20,24 +23,23 @@
 //  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-// See the accompanying blog post: http://chris.eidhof.nl/posts/tiny-networking-in-swift.html
-
 import Foundation
 
+/// Represents a request made to an API, however, any HTTP request can be made with this class.
 struct APIRequest {
   let session: NSURLSession
   let baseURL: NSURL
 
+  // Allow for dependency injection to make the class testable
   init(baseURL: NSURL, session: NSURLSession = NSURLSession.sharedSession()) {
-    self.baseURL = baseURL
     self.session = session
+    self.baseURL = baseURL
   }
 
   func makeRequest<A>(
     requestModifier requestModifier: (NSMutableURLRequest -> ())?, resource: Resource<A>,
-    failure: (Reason, NSData?) -> (), completion: A -> ()) {
+    failure: (reason: Reason, data: NSData?) -> (), completion: A -> ()) {
 
-      let session = NSURLSession.sharedSession()
       let url = baseURL.URLByAppendingPathComponent(resource.path.path)
       let request = NSMutableURLRequest(URL: url)
 
@@ -54,33 +56,58 @@ struct APIRequest {
         (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
 
         if let httpResponse = response as? NSHTTPURLResponse {
-          
-          if 200...299 ~= httpResponse.statusCode {
+          switch httpResponse.statusCode {
+
+            // Success!
+          case 200...299:
             if let responseData = data {
               if let result = resource.parser(responseData) {
                 completion(result)
               }
 
               else {
-                failure(Reason.CouldNotParseJSON, data)
+                failure(reason: Reason.UnableToParseData, data: data)
               }
             }
 
             else {
-              failure(Reason.NoData, data)
+              failure(reason: Reason.NoData, data: data)
             }
-          } // httpResponse.statusCode == 200
 
-          else {
-            failure(Reason.NoSuccessStatusCode(statusCode: httpResponse.statusCode), data)
+            break
+
+            // Redirection
+          case 300...399:
+            failure(reason: Reason.Redirection(
+              httpStatusCode: httpResponse.statusCode), data: data
+            )
+            break
+
+            // Client error
+          case 400...499:
+            failure(reason: Reason.ClientError(
+              httpStatusCode: httpResponse.statusCode), data: data
+            )
+            break
+
+            // Server error
+          case 500...599:
+            failure(reason: Reason.ServerError(
+              httpStatusCode: httpResponse.statusCode), data: data
+            )
+            break
+
+          default:
+            break
           }
         }
-
+          
         else {
-          failure(Reason.Other(error!), data)
+          failure(reason: Reason.Other(error!), data: data)
         }
       }
       
       task.resume()
   }
 }
+

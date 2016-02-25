@@ -1,5 +1,5 @@
 //
-//  ErrorTypes.swift
+//  HTTPMethods.swift
 //  TinyNetwork
 //
 //  Created by Chris Eidof on 11/07/14.
@@ -24,10 +24,18 @@
 
 import Foundation
 
-// Provides a more specific reason for failure.
-enum Reason: ErrorType {
-  case CouldNotParseJSON
-  case NoData
-  case NoSuccessStatusCode(statusCode: Int)
-  case Other(NSError)
+// Allow us to leverage Swift's type system to describe HTTP methods. This will make it impossible
+// for a developer to commit a typo which would happen if we were using strings only.
+
+// Bluntly stolen from Alamofire
+enum HTTPMethod: String {
+  case OPTIONS = "OPTIONS"
+  case GET = "GET"
+  case HEAD = "HEAD"
+  case POST = "POST"
+  case PUT = "PUT"
+  case PATCH = "PATCH"
+  case DELETE = "DELETE"
+  case TRACE = "TRACE"
+  case CONNECT = "CONNECT"
 }

@@ -26,7 +26,7 @@ import Foundation
 
 struct Resource<A> {
   let path: Path
-  let method: Method
+  let method: HTTPMethod
   let requestBody: NSData?
   let headers: [String: String]
   let parser: NSData -> A?

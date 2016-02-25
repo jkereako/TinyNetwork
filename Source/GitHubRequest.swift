@@ -13,7 +13,7 @@ struct GitHubRequest {
   func zen() -> Resource<String> {
     return Resource(
       path: Github.Zen,
-      method: Method.GET,
+      method: HTTPMethod.GET,
       requestBody: nil,
       headers: [:],
       parser: GitHubResponse().parseString
